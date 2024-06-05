@@ -17,9 +17,9 @@ parser.add_argument(
 )
 
 ### Step 5 Run the following code to generate trt model file 'engine.trt' and calibration file 'calibration.cache'.
-'''bash
+``` bash
 python3 build_engine.py --onnx /path/to/model.onnx --engine /path/to/engine.trt --precision int8 --calib_input path/to/calibration/images --calib_cache /path/to/calibration.cache -- calib_preprocessor V3
-'''
+```
 
 ### Step 6 (optional) After you have done with final Step 5, if the final result is not as good as you expected, please check the INT8 Calibrator. By default, IInt8EntroyCalibrator is used, but you can change to IInt8MinMaxCalibrator just by changing one line in 'image_batcher.py' as following:
 class EngineCalibrator(trt.IInt8EntropyCalibrator2) → class EngineCalibrator(trt.IInt8MinMaxCalibrator)
@@ -29,6 +29,6 @@ class EngineCalibrator(trt.IInt8EntropyCalibrator2) → class EngineCalibrator(t
 ### Step 8 Keep the generated calibration cache file and copy to your Jetson platform.
 
 ### Step 9 Run the following command to regenerate your trt model file 'engine.trt' that can inference on Jetson platform normally.
-'''bash
+``` bash
 trtexec --onnx=path/to/your/model.onnx --saveEngin=path/to/your/engine.trt --calib=path/to/your/calibration.cache --int8 --verbose
-'''
+```
