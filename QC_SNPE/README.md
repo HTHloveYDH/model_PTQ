@@ -6,6 +6,7 @@ git clone https://github.com/Megvii-BaseDetection/YOLOX.git
 ### step 2 modify some code in official repo
   add 'class FocusV2' in model_PTQ/QC_SNPE/FocusV2.py to https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/network_blocks.py
 
+
 ## for yolov5
 ### step 1 clone official repo
 git clone https://github.com/ultralytics/yolov5.git
