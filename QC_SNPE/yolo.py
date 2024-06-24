@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 
+
 class Detect(nn.Module):
     # YOLOv5 Detect head for detection models
     stride = None  # strides computed during build
