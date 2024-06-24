@@ -250,8 +250,8 @@ class YOLOXHead(nn.Module):
         #     torch.exp(outputs[..., 2:4]) * strides,
         #     outputs[..., 4:]
         # ], dim=-1)
-
-        xy, wh, conf = outputs.split((2, 2, -1), -1)
+        
+        xy, wh, conf = outputs.split((2, 2, outputs.shape[-1]), -1)
         outputs = torch.cat([
             (xy + grids) * strides,
             torch.exp(wh) * strides,
