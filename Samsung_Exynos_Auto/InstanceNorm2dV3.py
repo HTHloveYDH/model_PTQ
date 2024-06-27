@@ -64,7 +64,7 @@ if __name__ == '__main__':
     )
     # eval mode
     torch_input = torch.randn(2, 3, 640, 640)
-    IN = InstanceNorm2dV2(3, affine=False, track_running_stats=True)
+    IN = InstanceNorm2dV3(3, affine=False, track_running_stats=True)
     IN.eval()
     print(IN.training, IN.track_running_stats)
     torch.onnx.export(
