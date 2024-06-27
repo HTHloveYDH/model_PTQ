@@ -42,3 +42,38 @@ class InstanceNorm2dV3(nn.Module):
         if self.affine:
             output = self.gamma * output + self.beta
         return output
+
+
+if __name__ == '__main__':
+    # generate onnx
+    # train mode
+    torch_input = torch.randn(2, 3, 640, 640)
+    IN = InstanceNorm2dV3(3, affine=False, track_running_stats=True)
+    IN.train()
+    print(IN.training, IN.track_running_stats)
+    IN(torch_input)
+    torch.onnx.export(
+        IN,               # model being run
+        torch_input,                         # model input (or a tuple for multiple inputs)
+        "export_in_train.onnx",   # where to save the model (can be a file or file-like object)
+        export_params=True,        # store the trained parameter weights inside the model file
+        opset_version=13,          # the ONNX version to export the model to
+        do_constant_folding=True,  # whether to execute constant folding for optimization
+        input_names = ['input'],   # the model's input names
+        output_names = ['output'], # the model's output names
+    )
+    # eval mode
+    torch_input = torch.randn(2, 3, 640, 640)
+    IN = InstanceNorm2dV2(3, affine=False, track_running_stats=True)
+    IN.eval()
+    print(IN.training, IN.track_running_stats)
+    torch.onnx.export(
+        IN,               # model being run
+        torch_input,                         # model input (or a tuple for multiple inputs)
+        "export_in_eval.onnx",   # where to save the model (can be a file or file-like object)
+        export_params=True,        # store the trained parameter weights inside the model file
+        opset_version=13,          # the ONNX version to export the model to
+        do_constant_folding=True,  # whether to execute constant folding for optimization
+        input_names = ['input'],   # the model's input names
+        output_names = ['output'], # the model's output names
+    )
