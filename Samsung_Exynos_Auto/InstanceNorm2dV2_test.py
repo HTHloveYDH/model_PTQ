@@ -5,7 +5,10 @@ from InstanceNorm2dV2 import InstanceNorm2dV2
     
 
 if __name__ == '__main__':
+    # dummy input
     torch_input = torch.randn(3, 4, 2, 2)
+    
+    ### dummy training stage
     # my version
     INV2 = InstanceNorm2dV2(4, affine=False, track_running_stats=True)
     print('initial running mean of InstanceNorm2dV2: ', INV2.running_mean)
@@ -20,4 +23,10 @@ if __name__ == '__main__':
     y = IN(torch_input)
     print('updated running mean of InstanceNorm2dV2: ', INV2.running_mean, 'updated running mean of InstanceNorm2d: ', IN.running_mean)
     print('updated running var of InstanceNorm2dV2: ', INV2.running_var, 'updated running var of InstanceNorm2d: ', IN.running_var)
-    print(abs(y - y_v2))
+    
+    ### dummy eval stage
+    INV2.eval()
+    y_v2_eval = INV2(torch_input)
+    IN.eval()
+    y_eval = IN(torch_input)
+    print(abs(y_eval - y_v2_eval))
