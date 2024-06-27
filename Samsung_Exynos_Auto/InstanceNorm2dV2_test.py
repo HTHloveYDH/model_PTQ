@@ -42,9 +42,9 @@ if __name__ == '__main__':
     ### test InstanceNorm2dV2 on GPU
     test_gpu_model = TestGPUModel()
     # print(test_gpu_model.parameters())
-    for param in test_model.parameters():
+    for param in test_gpu_model.parameters():
         print(param.device)
     test_gpu_model.cuda()
-    for param in test_model.parameters():
+    for param in test_gpu_model.parameters():
         print(param.device)
     print(test_gpu_model(torch_input.cuda()).shape)
