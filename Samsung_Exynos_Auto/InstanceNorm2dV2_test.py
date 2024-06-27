@@ -2,7 +2,15 @@ import torch
 import torch.nn as nn
 
 from InstanceNorm2dV2 import InstanceNorm2dV2
-    
+
+
+class TestGPUModel(nn.Module):
+    def __init__(self, in_channels:int):
+        super(TestGPUModel, self).__init__()
+        self.IN = InstanceNorm2dV2(in_channels, affine=True, track_running_stats=True, device='cuda:0')
+    def forward(self, x):
+        return self.IN(x)
+
 
 if __name__ == '__main__':
     # dummy input
@@ -32,11 +40,11 @@ if __name__ == '__main__':
     print(abs(y_eval - y_v2_eval))
 
     ### test InstanceNorm2dV2 on GPU
-    test_model = TestModel()
-    # print(test_model.parameters())
+    test_gpu_model = TestGPUModel()
+    # print(test_gpu_model.parameters())
     for param in test_model.parameters():
         print(param.device)
-    test_model.cuda()
+    test_gpu_model.cuda()
     for param in test_model.parameters():
         print(param.device)
-    print(test_model(torch_input.cuda()).shape)
+    print(test_gpu_model(torch_input.cuda()).shape)
