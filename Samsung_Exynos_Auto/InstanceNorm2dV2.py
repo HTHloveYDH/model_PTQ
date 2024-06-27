@@ -31,12 +31,12 @@ class InstanceNorm2dV2(nn.Module):
         bs, c, h, w = input.shape
         shape = bs, c, h, w
         if self.training:
-            curr_mean = input.mean(dim=(2, 3), keepdim=False)  # shape: (bs, c)
-            curr_var = input.var(dim=(2, 3), keepdim=False)  # shape: (bs, c)
+            curr_mean = input.mean(dim=(2, 3), keepdim=False).mean(0)  # shape: (c,)
+            curr_var = input.var(dim=(2, 3), keepdim=False).mean(0)  # shape: (c,)
             if self.track_running_stats:
-                self.running_mean = curr_mean.mean(0) * self.momentum + self.running_mean * (1.0 - self.momentum)  # shape: (c,)
-                self.running_var = curr_var.mean(0) * self.momentum + self.running_var * (1.0 - self.momentum)  # shape: (c,)
-            output = (input - curr_mean.view(bs, -1, 1, 1)) / torch.sqrt(curr_var.view(bs, -1, 1, 1) + self.eps)  # shape: (bs, c, h, w)
+                self.running_mean = curr_mean * self.momentum + self.running_mean * (1.0 - self.momentum)  # shape: (c,)
+                self.running_var = curr_var * self.momentum + self.running_var * (1.0 - self.momentum)  # shape: (c,)
+            output = (input - curr_mean.view(1, -1, 1, 1)) / torch.sqrt(curr_var.view(1, -1, 1, 1) + self.eps)  # shape: (bs, c, h, w)
         else:
             output = (input - self.running_mean.view(1, -1, 1, 1)) / torch.sqrt(self.running_var.view(1, -1, 1, 1) + self.eps)  # shape: (bs, c, h, w)
         if self.affine:
