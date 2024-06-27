@@ -4,7 +4,7 @@ import torch.nn as nn
 from InstanceNorm2dV3 import InstanceNorm2dV3
 
 
-class TestModel(nn.Module):
+class TestGPUModel(nn.Module):
     def __init__(self):
         super(m3, self).__init__()
         self.IN = InstanceNorm2dV3(4, affine=True, track_running_stats=True)
@@ -40,11 +40,11 @@ if __name__ == '__main__':
     print(abs(y_eval - y_v3_eval))
 
     ### test InstanceNorm2dV3 on GPU
-    test_model = TestModel()
-    # print(test_model.parameters())
-    for param in test_model.parameters():
+    test_gpu_model = TestGPUModel()
+    # print(test_gpu_model.parameters())
+    for param in test_gpu_model.parameters():
         print(param.device)
-    test_model.cuda()
-    for param in test_model.parameters():
+    test_gpu_model.cuda()
+    for param in test_gpu_model.parameters():
         print(param.device)
-    print(test_model(torch_input.cuda()).shape)
+    print(test_gpu_model(torch_input.cuda()).shape)
