@@ -30,3 +30,13 @@ if __name__ == '__main__':
     IN.eval()
     y_eval = IN(torch_input)
     print(abs(y_eval - y_v2_eval))
+
+    ### test InstanceNorm2dV2 on GPU
+    test_model = TestModel()
+    # print(test_model.parameters())
+    for param in test_model.parameters():
+        print(param.device)
+    test_model.cuda()
+    for param in test_model.parameters():
+        print(param.device)
+    print(test_model(torch_input.cuda()).shape)
