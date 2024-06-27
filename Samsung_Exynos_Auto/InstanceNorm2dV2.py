@@ -7,8 +7,8 @@ class InstanceNorm2dV2(nn.Module):
                  device=None, dtype=None):
         super(InstanceNorm2dV2, self).__init__()
         if track_running_stats:
-          self.running_mean = torch.zeros(in_channels, requires_grad=False)  # shape: (c,)
-          self.running_var = torch.ones(in_channels, requires_grad=False)  # shape: (c,)
+          self.running_mean = torch.zeros(in_channels, requires_grad=False).to(device)  # shape: (c,)
+          self.running_var = torch.ones(in_channels, requires_grad=False).to(device)  # shape: (c,)
         else:
           self.running_mean = None
           self.running_var = None
