@@ -29,12 +29,15 @@ class InstanceNorm2dV2(nn.Module):
 
     def forward(self, input):
         # bs, c, h, w = input.shape
-        if self.track_running_stats and self.training:
+        if self.training:
             curr_mean = input.mean(dim=(2, 3), keepdim=True)  # (bs, c, 1, 1)
             curr_var = input.var(dim=(2, 3), keepdim=True)  # (bs, c, 1, 1)
-            self.running_mean = curr_mean * self.momentum + self.running_mean * (1.0 - self.momentum)
-            self.running_var = curr_var * self.momentum + self.running_var * (1.0 - self.momentum)
-        output = (input - self.running_mean) / torch.sqrt(self.running_var + self.eps)
+            if self.track_running_stats:
+                self.running_mean = curr_mean * self.momentum + self.running_mean * (1.0 - self.momentum)
+                self.running_var = curr_var * self.momentum + self.running_var * (1.0 - self.momentum)
+            output = (input - curr_mean) / torch.sqrt(curr_var + self.eps)
+        else:
+            output = (input - self.running_mean) / torch.sqrt(self.running_var + self.eps)
         if self.affine:
             output = self.gamma * output + self.beta
         return output
