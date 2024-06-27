@@ -18,6 +18,6 @@ if __name__ == '__main__':
     print('initial running var of InstanceNorm2d: ', IN.running_var)
     IN.train()
     y = IN(torch_input)
-    print('updated running mean of InstanceNorm2dV2: ', INV2.running_mean.mean(0), 'updated running mean of InstanceNorm2d: ', IN.running_mean)
-    print('updated running var of InstanceNorm2dV2: ', INV2.running_var.mean(0), 'updated running var of InstanceNorm2d: ', IN.running_var)
+    print('updated running mean of InstanceNorm2dV2: ', INV2.running_mean, 'updated running mean of InstanceNorm2d: ', IN.running_mean)
+    print('updated running var of InstanceNorm2dV2: ', INV2.running_var, 'updated running var of InstanceNorm2d: ', IN.running_var)
     print(abs(y - y_v2))
