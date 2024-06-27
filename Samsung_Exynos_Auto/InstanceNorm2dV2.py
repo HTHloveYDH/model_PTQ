@@ -10,8 +10,8 @@ class InstanceNorm2dV2(nn.Module):
           self.running_mean = torch.zeros(in_channels, requires_grad=False)  # shape: (c,)
           self.running_var = torch.ones(in_channels, requires_grad=False)  # shape: (c,)
         else:
-          self.run_mean = None
-          self.run_var = None
+          self.running_mean = None
+          self.running_var = None
         self.in_channels = in_channels
         self.eps = eps
         self.momentum = momentum
