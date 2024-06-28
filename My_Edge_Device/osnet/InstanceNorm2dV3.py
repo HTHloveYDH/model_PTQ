@@ -21,11 +21,11 @@ class InstanceNorm2dV3(nn.Module):
         self.dtype = dtype
         if affine:
             # γ and 𝛽 are learnable parameter vectors of size C (where C is the input size)
-            self.gamma = nn.Parameter(torch.ones(1, in_channels, 1, 1), requires_grad=True)  # shape: (1, c, 1, 1)
-            self.beta = nn.Parameter(torch.zeros(1, in_channels, 1, 1), requires_grad=True)  # shape: (1, c, 1, 1)
+            self.weight = nn.Parameter(torch.ones(1, in_channels, 1, 1), requires_grad=True)  # shape: (1, c, 1, 1)
+            self.bias = nn.Parameter(torch.zeros(1, in_channels, 1, 1), requires_grad=True)  # shape: (1, c, 1, 1)
         else:
-          self.gamma = 1.0
-          self.beta = 0.0
+          self.weight = 1.0
+          self.bias = 0.0
 
     def forward(self, input):
         bs, c, h, w = input.shape
@@ -40,7 +40,7 @@ class InstanceNorm2dV3(nn.Module):
         else:
             output = (input - self.running_mean.view(1, -1, 1, 1)) / torch.sqrt(self.running_var.view(1, -1, 1, 1) + self.eps)  # shape: (bs, c, h, w)
         if self.affine:
-            output = self.gamma * output + self.beta
+            output = self.weight * output + self.bias
         return output
 
 
