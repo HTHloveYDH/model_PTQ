@@ -2,12 +2,12 @@ import torch
 import torch.nn as nn
 
 
-def replace_in_by_bn(model:nn.Module):
-    i = 0
-    for m in model:
-        if instance(m, nn.InstanceNorm2d):
-            bn = nn.BatchNorm()
-            bn.running_mean = m.running_mean
-            bn.running_var = m.running_var
-            model[i] = bn
-        i += 1
+def replace_in_by_bn(model):
+    for name, module in model.named_children():
+        if isinstance(module, nn.InstanceNorm2d):
+            bn = nn.BatchNorm2d(mm.num_features)
+            bn.running_mean = mm.running_mean
+            bn.running_var = mm.running_var
+            setattr(model, name, bn)
+        elif len(list(module.children())) > 0:
+            replace_layer(module)
