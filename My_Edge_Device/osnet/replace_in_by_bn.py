@@ -5,6 +5,7 @@ import torch.nn as nn
 def replace_in_by_bn(model):
     for name, module in model.named_children():
         if isinstance(module, nn.InstanceNorm2d):
+            # print(name)
             bn = nn.BatchNorm2d(
                 module.num_features, eps=module.eps, momentum=module.momentum, 
                 affine=module.affine, track_running_stats=module.track_running_stats
