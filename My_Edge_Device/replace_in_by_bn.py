@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 
+
 def replace_in_by_bn(model:nn.Module):
     i = 0
     for m in model:
