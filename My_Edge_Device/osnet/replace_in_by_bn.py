@@ -16,3 +16,16 @@ def replace_in_by_bn(model):
             setattr(model, name, bn)
         elif len(list(module.children())) > 0:
             replace_in_by_bn(module)
+
+
+if __name__ == '__main__':
+    BN = nn.BatchNorm2d(3)
+    IN = nn.InstanceNorm2d(3, affine=True, track_running_stats=True)
+    print(BN.running_mean, IN.running_mean)
+    print(BN.running_var, IN.running_var)
+    print(BN.weight, IN.weight)
+    print(BN.bias, IN.bias)
+    torch_input = torch.randn(1, 3, 3, 3)
+    BN.eval()
+    IN.eval()
+    print(BN(torch_input) - IN(torch_input))
