@@ -45,11 +45,11 @@ class FocusV2(nn.Module):
     def __init__(self, in_channels, out_channels, ksize=1, stride=1, act="silu"):
         super(FocusV2, self).__init__()
         weights = torch.zeros(in_channels * 4, in_channels, 2, 2)
-        for i in range(3):
+        for i in range(in_channels):
             weights[i][i][0][0] = 1.
-            weights[i+3][i][1][0] = 1.
-            weights[i+6][i][0][1] = 1.
-            weights[i+9][i][1][1] = 1.
+            weights[i+in_channels*1][i][1][0] = 1.
+            weights[i+in_channels*2][i][0][1] = 1.
+            weights[i+in_channels*3][i][1][1] = 1.
         self.conv1 = nn.Conv2d(in_channels, in_channels * 4, 2, 2, padding=0, bias=False)
         self.conv1.weight = nn.Parameter(weights, requires_grad=False)
         self.conv2 = BaseConv(in_channels * 4, out_channels, ksize, stride, act=act)
