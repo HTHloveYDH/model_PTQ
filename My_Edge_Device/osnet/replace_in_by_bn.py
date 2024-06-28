@@ -19,6 +19,7 @@ def replace_in_by_bn(model):
 
 
 if __name__ == '__main__':
+    # prove that in the eval mode, nn.BatchNorm2d and nn.InstanceNorm2d are equivalent
     BN = nn.BatchNorm2d(3)
     IN = nn.InstanceNorm2d(3, affine=True, track_running_stats=True)
     print(BN.running_mean, IN.running_mean)
