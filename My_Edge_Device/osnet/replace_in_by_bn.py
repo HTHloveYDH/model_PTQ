@@ -10,4 +10,4 @@ def replace_in_by_bn(model):
             bn.running_var = mm.running_var
             setattr(model, name, bn)
         elif len(list(module.children())) > 0:
-            replace_layer(module)
+            replace_in_by_bn(module)
