@@ -91,8 +91,8 @@ class OnnxConcatenater:
 
 if __name__ == '__main__':
     # load onnxx models
-    model_a = onnx.load("/content/export_model.onnx")
-    model_b = onnx.load("/content/yolox_tiny_part.onnx")
+    model_a = onnx.load("/content/FocusV2_without_2nd_conv.onnx")
+    model_b = onnx.load("/content/yolox_tiny_without_beginning_slices.onnx")
     onnx_concatenater = OnnxConcatenater("/content/export_model.onnx", "/content/yolox_tiny_part.onnx")
     # merge models
     merged_model = onnx_concatenater.merge_models(model_a, model_b, '_b')
