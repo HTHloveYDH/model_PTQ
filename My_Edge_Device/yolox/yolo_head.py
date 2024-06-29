@@ -246,12 +246,14 @@ class YOLOXHead(nn.Module):
         grids = torch.cat(grids, dim=-1).type(dtype)
         strides = torch.cat(strides, dim=-1).type(dtype)
 
+        # # option 1#: slice
         # outputs = torch.cat([
         #     (outputs[:, 0:2, :] + grids) * strides,
         #     torch.exp(outputs[:, 2:4, :]) * strides,
         #     outputs[:, 4:, :]
         # ], dim=1)
         
+        # option 2#: split
         xy, wh, conf = outputs.split((2, 2, outputs.shape[-1] - 4), 1)
         outputs = torch.cat([
             (xy + grids) * strides,
