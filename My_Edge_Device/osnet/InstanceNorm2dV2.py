@@ -7,8 +7,8 @@ class InstanceNorm2dV2(nn.Module):
                  device=None, dtype=None):
         super(InstanceNorm2dV2, self).__init__()
         if track_running_stats:
-          self.running_mean = torch.zeros(in_channels, requires_grad=False).to(device)  # shape: (c,)
-          self.running_var = torch.ones(in_channels, requires_grad=False).to(device)  # shape: (c,)
+          register_buffer('running_mean', torch.zeros(in_channels))  # shape: (c,)
+          register_buffer('running_var', torch.ones(in_channels))  # shape: (c,)
         else:
           self.running_mean = None
           self.running_var = None
@@ -21,8 +21,8 @@ class InstanceNorm2dV2(nn.Module):
         self.dtype = dtype
         if affine:
             # γ and 𝛽 are learnable parameter vectors of size C (where C is the input size)
-            self.weight = nn.Parameter(torch.ones(1, in_channels, 1, 1), requires_grad=True)  # shape: (1, c, 1, 1)
-            self.bias = nn.Parameter(torch.zeros(1, in_channels, 1, 1), requires_grad=True)  # shape: (1, c, 1, 1)
+            self.weight = nn.Parameter(torch.ones(in_channels), requires_grad=True)  # shape: (c,)
+            self.bias = nn.Parameter(torch.zeros(in_channels), requires_grad=True)  # shape: (c,)
         else:
           self.weight = 1.0
           self.bias = 0.0
@@ -36,9 +36,9 @@ class InstanceNorm2dV2(nn.Module):
             if self.track_running_stats:
                 self.running_mean = curr_mean * self.momentum + self.running_mean * (1.0 - self.momentum)  # shape: (c,)
                 self.running_var = curr_var * self.momentum + self.running_var * (1.0 - self.momentum)  # shape: (c,)
-            output = (input - curr_mean.view(1, -1, 1, 1)) / torch.sqrt(curr_var.view(1, -1, 1, 1) + self.eps)  # shape: (bs, c, h, w)
+            output = (input - curr_mean.view(1, -1, 1, 1).expand_as(input)) / torch.sqrt(curr_var.view(1, -1, 1, 1).expand_as(input) + self.eps)  # shape: (bs, c, h, w)
         else:
-            output = (input - self.running_mean.view(1, -1, 1, 1)) / torch.sqrt(self.running_var.view(1, -1, 1, 1) + self.eps)  # shape: (bs, c, h, w)
+            output = (input - self.running_mean.view(1, -1, 1, 1).expand_as(input)) / torch.sqrt(self.running_var.view(1, -1, 1, 1).expand_as(input) + self.eps)  # shape: (bs, c, h, w)
         if self.affine:
             output = self.weight * output + self.bias
         return output
