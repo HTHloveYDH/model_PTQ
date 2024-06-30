@@ -6,11 +6,8 @@ class InstanceNorm2dV2(nn.Module):
     def __init__(self, in_channels:int, eps=1e-5, momentum=0.1, affine=False, track_running_stats=False,
                  device=None, dtype=None):
         super(InstanceNorm2dV2, self).__init__()
-        register_buffer('running_mean', torch.zeros(in_channels))  # shape: (c,)
-        register_buffer('running_var', torch.ones(in_channels))  # shape: (c,)
-        else:
-          self.running_mean = None
-          self.running_var = None
+        self.register_buffer('running_mean', torch.zeros(in_channels))  # shape: (c,)
+        self.register_buffer('running_var', torch.ones(in_channels))  # shape: (c,)
         self.in_channels = in_channels
         self.eps = eps
         self.momentum = momentum
