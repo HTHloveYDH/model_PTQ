@@ -40,7 +40,7 @@ class InstanceNorm2dV3(nn.Module):
         else:
             output = (input - self.running_mean.view(1, -1, 1, 1).expand_as(input)) / torch.sqrt(self.running_var.view(1, -1, 1, 1).expand_as(input) + self.eps)  # shape: (bs, c, h, w)
         if self.affine:
-            output = self.weight * output + self.bias
+            output = self.weight.view(1, -1, 1, 1).expand_as(input) * output + self.bias.view(1, -1, 1, 1).expand_as(input)
         return output
 
 
