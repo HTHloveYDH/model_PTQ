@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 
-def replace_in_by_bn(model):
+def replace_in_with_bn(model):
     for name, module in model.named_children():
         if isinstance(module, nn.InstanceNorm2d):
             # print(name)
