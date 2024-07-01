@@ -254,7 +254,7 @@ class YOLOXHead(nn.Module):
         # ], dim=1)
         
         # option 2#: split
-        xy, wh, conf = outputs.split((2, 2, outputs.shape[-1] - 4), 1)
+        xy, wh, conf = outputs.split((2, 2, outputs.shape[1] - 4), 1)
         outputs = torch.cat([
             (xy + grids) * strides,
             torch.exp(wh) * strides,
