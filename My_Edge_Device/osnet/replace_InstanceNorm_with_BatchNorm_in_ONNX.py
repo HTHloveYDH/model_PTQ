@@ -63,4 +63,4 @@ def replace_in_with_bn(onnx_model_path:str, is_add_weight_bias=False):
         graph.initializer.append(initializer)
     onnx.checker.check_model(onnx_model)
     save_onnx_model_dir = os.path.dirname(onnx_model_path)
-    onnx.save(onnx_model, os.path.join(f'{save_onnx_model_dir}, 'modified.onnx'))
+    onnx.save(onnx_model, os.path.join(f'{save_onnx_model_dir}', 'modified.onnx'))
