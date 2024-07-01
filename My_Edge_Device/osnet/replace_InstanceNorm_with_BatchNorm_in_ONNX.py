@@ -1,4 +1,10 @@
-def replace_InstanceNorm_with_BatchNorm_in_ONNX(onnx_model_path:str, is_add_weight_bias=False):
+import os
+
+import onnx
+import numpy as np
+
+
+def replace_in_with_bn(onnx_model_path:str, is_add_weight_bias=False):
     onnx_model = onnx.load(onnx_model_path)
     graph = onnx_model.graph
     in_node_index = 0
@@ -56,4 +62,5 @@ def replace_InstanceNorm_with_BatchNorm_in_ONNX(onnx_model_path:str, is_add_weig
     for initializer in additional_initializers:
         graph.initializer.append(initializer)
     onnx.checker.check_model(onnx_model)
-    onnx.save(onnx_model,f'modified.onnx')
+    save_onnx_model_dir = os.path.dirname(onnx_model_path)
+    onnx.save(onnx_model, os.path.join(f'{save_onnx_model_dir}, 'modified.onnx'))
