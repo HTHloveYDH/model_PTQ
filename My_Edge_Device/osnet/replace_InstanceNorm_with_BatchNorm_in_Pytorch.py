@@ -16,7 +16,7 @@ def replace_in_with_bn(model):
             bn.bias = module.bias
             setattr(model, name, bn)
         elif len(list(module.children())) > 0:
-            replace_in_by_bn(module)
+            replace_in_with_bn(module)
 
 
 if __name__ == '__main__':
