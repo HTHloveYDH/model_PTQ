@@ -110,6 +110,7 @@ if __name__ == '__main__':
 
     ori_onnx_odel_path = '/content/faceID_model_2_0.onnx'
     modified_onnx_odel_path = '/content/modified_model.onnx'
+    # [note] batch is to be 1
     dummy_input = np.random.randn(1, 1, 224, 224).astype(np.float32)
     replace_in_with_bn(ori_onnx_odel_path)
     sess1 = nxrun.InferenceSession(ori_onnx_odel_path)
