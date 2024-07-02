@@ -5,7 +5,7 @@ import numpy as np
 from onnx import helper, numpy_helper
 
 
-def replace_InstanceNorm_with_base_ops_in_ONNX(onnx_model_path:str):
+def replace_InstanceNorm_with_base_ops(onnx_model_path:str):
     # load onnx original model
     model = onnx.load(onnx_model_path)
     graph = model.graph
@@ -160,7 +160,7 @@ if __name__ == '__main__':
     ori_onnx_odel_path = '/content/faceID_model_2_0.onnx'
     modified_onnx_odel_path = '/content/modified_model.onnx'
     dummy_input = np.random.randn(1, 1, 224, 224).astype(np.float32)
-    replace_InstanceNorm_with_base_ops_in_ONNX(ori_onnx_odel_path)
+    replace_InstanceNorm_with_base_ops(ori_onnx_odel_path)
     sess1 = nxrun.InferenceSession(ori_onnx_odel_path)
     input_name = sess1.get_inputs()[0].name
     # input_shape = sess1.get_inputs()[0].shape
