@@ -4,7 +4,7 @@ import onnx
 import numpy as np
 
 
-def replace_in_with_bn(onnx_model_path:str, is_add_weight_bias=False):
+def replace_in_with_bn(onnx_model_path:str):
     onnx_model = onnx.load(onnx_model_path)
     graph = onnx_model.graph
     in_node_index = 0
@@ -16,7 +16,7 @@ def replace_in_with_bn(onnx_model_path:str, is_add_weight_bias=False):
                 bn_node = onnx.helper.make_node(
                     'BatchNormalization', inputs=list(node.input), outputs=list(node.output), name=f'replace_{in_node_index}_{node.name}'
                 )
-            elif len(node.input) == 3 and not is_add_weight_bias:
+            elif len(node.input) == 3:
                 inputs = list(node.input) + [f'replace_{in_node_index}_{node.name}_running_mean', f'replace_{in_node_index}_{node.name}_running_var']
                 for initializer_index, initializer in enumerate(graph.initializer):  
                     if initializer.name == node.input[1]:
@@ -30,24 +30,6 @@ def replace_in_with_bn(onnx_model_path:str, is_add_weight_bias=False):
                             np.ones(in_channels, dtype=float)
                         )
                 additional_initializers += [running_mean, running_var]
-                bn_node = onnx.helper.make_node(
-                    'BatchNormalization', inputs=inputs, outputs=list(node.output), name=f'replace_{in_node_index}_{node.name}'
-                )
-                print('target BatchNorm Node: ', bn_node)
-            elif len(node.input) == 3 and is_add_weight_bias:
-                inputs = [f'replace_{in_node_index}_{node.name}_weight', f'replace_{in_node_index}_{node.name}_bias'] + list(node.input)
-                for initializer_index, initializer in enumerate(graph.initializer):  
-                    if initializer.name == node.input[1]:
-                        in_channels = initializer.dims[0]  # number of channel
-                        weight = onnx.helper.make_tensor(
-                            f'replace_{in_node_index}_{node.name}_weight', onnx.TensorProto.FLOAT, [in_channels], 
-                            np.zeros(in_channels, dtype=float)
-                        )
-                        bias = onnx.helper.make_tensor(
-                            f'replace_{in_node_index}_{node.name}_bias', onnx.TensorProto.FLOAT, [in_channels], 
-                            np.ones(in_channels, dtype=float)
-                        )
-                additional_initializers += [weight, bias]
                 bn_node = onnx.helper.make_node(
                     'BatchNormalization', inputs=inputs, outputs=list(node.output), name=f'replace_{in_node_index}_{node.name}'
                 )
