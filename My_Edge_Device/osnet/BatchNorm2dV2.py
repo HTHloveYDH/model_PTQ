@@ -2,10 +2,10 @@ import torch
 import torch.nn as nn
 
 
-class InstanceNorm2dV2(nn.Module):
+class BatchNorm2dV2(nn.Module):
     def __init__(self, in_channels:int, eps=1e-5, momentum=0.1, affine=False, track_running_stats=False,
                  device=None, dtype=None):
-        super(InstanceNorm2dV2, self).__init__()
+        super(BatchNorm2dV2, self).__init__()
         self.register_buffer('running_mean', torch.zeros(in_channels))  # shape: (c,)
         self.register_buffer('running_var', torch.ones(in_channels))  # shape: (c,)
         self.in_channels = in_channels
@@ -27,8 +27,8 @@ class InstanceNorm2dV2(nn.Module):
         bs, c, h, w = input.shape
         shape = bs, c, h, w
         if self.training:
-            curr_mean = input.mean(dim=(2, 3), keepdim=False).mean(0)  # shape: (c,)
-            curr_var = input.var(dim=(2, 3), keepdim=False).mean(0)  # shape: (c,)
+            curr_mean = input.mean(dim=(0, 2, 3), keepdim=False)  # shape: (c,)
+            curr_var = input.var(dim=(0, 2, 3), keepdim=False)  # shape: (c,)
             if self.track_running_stats:
                 self.running_mean = curr_mean * self.momentum + self.running_mean * (1.0 - self.momentum)  # shape: (c,)
                 self.running_var = curr_var * self.momentum + self.running_var * (1.0 - self.momentum)  # shape: (c,)
@@ -44,14 +44,14 @@ if __name__ == '__main__':
     # generate onnx
     # train mode
     torch_input = torch.randn(2, 3, 640, 640)
-    IN = InstanceNorm2dV2(3, affine=False, track_running_stats=True)
-    IN.train()
-    print(IN.training, IN.track_running_stats)
+    BN = BatchNorm2dV2(3, affine=False, track_running_stats=True)
+    BN.train()
+    print(BN.training, BN.track_running_stats)
     IN(torch_input)
     torch.onnx.export(
-        IN,               # model being run
+        BN,               # model being run
         torch_input,                         # model input (or a tuple for multiple inputs)
-        "export_in_train.onnx",   # where to save the model (can be a file or file-like object)
+        "export_bn_train.onnx",   # where to save the model (can be a file or file-like object)
         export_params=True,        # store the trained parameter weights inside the model file
         opset_version=13,          # the ONNX version to export the model to
         do_constant_folding=True,  # whether to execute constant folding for optimization
@@ -60,13 +60,13 @@ if __name__ == '__main__':
     )
     # eval mode
     torch_input = torch.randn(2, 3, 640, 640)
-    IN = InstanceNorm2dV2(3, affine=False, track_running_stats=True)
-    IN.eval()
-    print(IN.training, IN.track_running_stats)
+    BN = BatchNorm2dV2(3, affine=False, track_running_stats=True)
+    BN.eval()
+    print(BN.training, BN.track_running_stats)
     torch.onnx.export(
-        IN,               # model being run
+        BN,               # model being run
         torch_input,                         # model input (or a tuple for multiple inputs)
-        "export_in_eval.onnx",   # where to save the model (can be a file or file-like object)
+        "export_bn_eval.onnx",   # where to save the model (can be a file or file-like object)
         export_params=True,        # store the trained parameter weights inside the model file
         opset_version=13,          # the ONNX version to export the model to
         do_constant_folding=True,  # whether to execute constant folding for optimization
