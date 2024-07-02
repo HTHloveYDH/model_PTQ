@@ -10,6 +10,8 @@ def replace_in_with_bn(model):
                 module.num_features, eps=module.eps, momentum=module.momentum, 
                 affine=module.affine, track_running_stats=module.track_running_stats
             )
+            assert module.running_mean is None
+            assert module.running_var is None
             bn.running_mean = module.running_mean
             bn.running_var = module.running_var
             bn.weight = module.weight
