@@ -2,10 +2,10 @@ import torch
 import torch.nn as nn
 
 
-class InstanceNorm2dV3(nn.Module):
-    def __init__(self, in_channels:int, eps=1e-5, momentum=0.1, affine=False, track_running_stats=False,
+class BatchNorm2dV3(nn.Module):
+    def __init__(self, in_channels:int, eps=1e-5, momentum=0.1, affine=True, track_running_stats=True,
                  device=None, dtype=None):
-        super(InstanceNorm2dV3, self).__init__()
+        super(BatchNorm2dV3, self).__init__()
         self.running_mean = nn.Parameter(torch.zeros(in_channels), requires_grad=False)  # shape: (c,)
         self.running_var = nn.Parameter(torch.ones(in_channels), requires_grad=False)  # shape: (c,)
         self.in_channels = in_channels
@@ -27,8 +27,8 @@ class InstanceNorm2dV3(nn.Module):
         bs, c, h, w = input.shape
         shape = bs, c, h, w
         if self.training:
-            curr_mean = input.mean(dim=(2, 3), keepdim=False).mean(0)  # shape: (c,)
-            curr_var = input.var(dim=(2, 3), keepdim=False).mean(0)  # shape: (c,)
+            curr_mean = input.mean(dim=(0, 2, 3), keepdim=False)  # shape: (c,)
+            curr_var = input.var(dim=(0, 2, 3), keepdim=False)  # shape: (c,)
             if self.track_running_stats:
                 self.running_mean = nn.Parameter(curr_mean * self.momentum + self.running_mean * (1.0 - self.momentum))  # shape: (c,)
                 self.running_var = nn.Parameter(curr_var * self.momentum + self.running_var * (1.0 - self.momentum))  # shape: (c,)
@@ -44,12 +44,12 @@ if __name__ == '__main__':
     # generate onnx
     # train mode
     torch_input = torch.randn(2, 3, 640, 640)
-    IN = InstanceNorm2dV3(3, affine=False, track_running_stats=True)
-    IN.train()
-    print(IN.training, IN.track_running_stats)
+    BN = BatchNorm2dV3(3, affine=False, track_running_stats=True)
+    BN.train()
+    print(BN.training, BN.track_running_stats)
     IN(torch_input)
     torch.onnx.export(
-        IN,               # model being run
+        BN,               # model being run
         torch_input,                         # model input (or a tuple for multiple inputs)
         "export_in_train.onnx",   # where to save the model (can be a file or file-like object)
         export_params=True,        # store the trained parameter weights inside the model file
@@ -60,11 +60,11 @@ if __name__ == '__main__':
     )
     # eval mode
     torch_input = torch.randn(2, 3, 640, 640)
-    IN = InstanceNorm2dV3(3, affine=False, track_running_stats=True)
-    IN.eval()
-    print(IN.training, IN.track_running_stats)
+    BN = BatchNorm2dV3(3, affine=False, track_running_stats=True)
+    BN.eval()
+    print(BN.training, BN.track_running_stats)
     torch.onnx.export(
-        IN,               # model being run
+        BN,               # model being run
         torch_input,                         # model input (or a tuple for multiple inputs)
         "export_in_eval.onnx",   # where to save the model (can be a file or file-like object)
         export_params=True,        # store the trained parameter weights inside the model file
