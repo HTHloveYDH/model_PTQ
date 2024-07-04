@@ -26,7 +26,7 @@ class Detect(nn.Module):
         z = []  # inference output
         for i in range(self.nl):
             x[i] = self.m[i](x[i])  # conv
-            bs, _, ny, nx = x[i].shape  # x(bs,255,20,20) to x(b * 3, 85, 20,20)
+            bs, _, ny, nx = x[i].shape  # x(bs,255,20,20) to x(bs * 3, 85, 20,20)
             # x[i] = x[i].view(bs * self.na, self.no, ny, nx).permute(0, 2, 3, 1).contiguous()
             x[i] = x[i].view(bs * self.na, self.no, ny, nx).contiguous()
 
@@ -49,7 +49,7 @@ class Detect(nn.Module):
                 # z.append(y.view(bs, self.na * nx * ny, self.no))
                 z.append(y.view(bs * self.na, self.no, nx * ny))
 
-        return x if self.training else (torch.cat(z, 1),) if self.export else (torch.cat(z, 1), x)
+        return x if self.training else (torch.cat(z, 2),) if self.export else (torch.cat(z, 2), x)
 
     def _make_grid(self, nx=20, ny=20, i=0, torch_1_10=check_version(torch.__version__, "1.10.0")):
         """Generates a mesh grid for anchor boxes with optional compatibility for torch versions < 1.10."""
