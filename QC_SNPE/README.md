@@ -41,4 +41,5 @@ snpe-pytorch-to-dlc --input_network models/my_model/my_model.pt --input_dim inpu
 add "--input_list path/to/image_file_list.txt" option to the commands in step 4
 
 or run following command:
+
 snpe-dlc-quantize --input_dlc path/to/my_model.dlc --input_list path/to/image_file_list.txt --output_dlc path/to/my_q_model.dlc
