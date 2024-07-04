@@ -7,6 +7,10 @@ Sustitute class 'Detect' in https://github.com/ultralytics/yolov5/blob/master/mo
 
 [option 2#]: run yolov5 in shape: (3, 85, 8400)
 Sustitute class 'Detect' in https://github.com/ultralytics/yolov5/blob/master/models/yolo.py by class 'Detect' in model_PTQ/My_Edge_Device/yolov5/onnx/Detect_shape_3_85_8400.py.
+
+[option 3#]: run yolov5 in shape: (3, 85, 8400) and replace split operations by convolution
+Sustitute class 'Detect' in https://github.com/ultralytics/yolov5/blob/master/models/yolo.py by class 'Detect' in model_PTQ/My_Edge_Device/yolov5/onnx/Detect_split_by_conv_shape_3_85_8400.py.
+
 ### step 3 export to .onnx model
 ```bash
 cd path/to/yolov5
