@@ -1,6 +1,6 @@
 # conda activate 8295_3.6
 
-export SNPE_ROOT=path/to/your/QC_Snapdragon_Neural_Processing_Engine_SDK/snpe-x.x.x.x/snpe-x.x.x.x
+export SNPE_ROOT=path/to/your/QC_Snapdragon_Neural_Processing_Engine_SDK/snpe-x.x.x.x
 
 export ANDROID_NDK_ROOT=path/to/your/QC_Snapdragon_Neural_Processing_Engine_SDK/android-ndk-x-linux/android-ndk-x
 
