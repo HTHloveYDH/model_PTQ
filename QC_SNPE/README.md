@@ -52,3 +52,4 @@ or run following command:
 ```bash
 snpe-dlc-quantize --input_dlc path/to/my_model.dlc --input_list path/to/image_file_list.txt --output_dlc path/to/my_q_model.dlc
 ```
+[Note]: Each path in "path/to/image_file_list.txt" is expected to point to a binary file containing one trial input in the 'raw' format, ready to be consumed by SNPE without any further modifications
