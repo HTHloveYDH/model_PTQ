@@ -1,7 +1,7 @@
 class SplitByConv1d(nn.Module):
     """Focus width and height information into channel space."""
     def __init__(self, in_channels, nc=80):
-        super(SplitBy1x1Conv, self).__init__()
+        super(SplitByConv1d, self).__init__()
         xy_conv_weights = torch.zeros(2, in_channels, 1)
         wh_conv_weights = torch.zeros(2, in_channels, 1)
         conf_conv_weights = torch.zeros(nc + 5 - 4, in_channels, 1)
