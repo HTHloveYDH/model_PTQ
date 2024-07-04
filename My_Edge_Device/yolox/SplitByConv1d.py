@@ -9,7 +9,7 @@ class SplitByConv1d(nn.Module):
             xy_conv_weights[i][i][0] = 1.
         for i in range(0, 2):
             wh_conv_weights[i][i + 2][0] = 1.
-        for i in range(0, 81):
+        for i in range(0, nc + 5 - 4):
             conf_conv_weights[i][i + 4][0] = 1.
         self.conv1 = nn.Conv1d(in_channels, 2, 1, 1, padding=0, bias=False)
         self.conv1.weight = nn.Parameter(xy_conv_weights, requires_grad=False)
