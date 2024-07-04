@@ -3,7 +3,7 @@
 git clone https://github.com/ultralytics/yolov5.git
 ### step 2 modify some code in official repo
 Sustitute class 'Detect' in https://github.com/ultralytics/yolov5/blob/master/models/yolo.py by class 'Detect' in model_PTQ/My_Edge_Device/yolov5/onnx/Detect.py.
-# step 3 export to .onnx model
+### step 3 export to .onnx model
 ```bash
 cd path/to/yolov5
 ```
