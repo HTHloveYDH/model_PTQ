@@ -2,10 +2,10 @@
 ### step 1 clone official repo
 git clone https://github.com/ultralytics/yolov5.git
 ### step 2 modify some code in official repo
-option1#: run yolov5 in shape: (1, 25200, 85)
+[option1#]: run yolov5 in shape: (1, 25200, 85)
 Sustitute class 'Detect' in https://github.com/ultralytics/yolov5/blob/master/models/yolo.py by class 'Detect' in model_PTQ/My_Edge_Device/yolov5/onnx/Detect_shape_1_25200_85.py.
 
-option2#: run yolov5 in shape: (3, 85, 8400)
+[option2#]: run yolov5 in shape: (3, 85, 8400)
 Sustitute class 'Detect' in https://github.com/ultralytics/yolov5/blob/master/models/yolo.py by class 'Detect' in model_PTQ/My_Edge_Device/yolov5/onnx/Detect_shape_3_85_8400.py.
 ### step 3 export to .onnx model
 ```bash
