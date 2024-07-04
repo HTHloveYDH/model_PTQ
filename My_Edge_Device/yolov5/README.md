@@ -2,10 +2,26 @@
 ### step 1 clone official repo
 git clone https://github.com/ultralytics/yolov5.git
 ### step 2 modify some code in official repo
-Sustitute class 'Detect' in https://github.com/ultralytics/yolov5/blob/master/models/yolo.py by model_PTQ/My_Edge_Device/yolov5/Detect.py.
-
+Sustitute class 'Detect' in https://github.com/ultralytics/yolov5/blob/master/models/yolo.py by class 'Detect' in model_PTQ/My_Edge_Device/yolov5/onnx/Detect.py.
+# step 3 export to .onnx model
+```bash
+cd path/to/yolov5
+```
+```bash
+python3 ./export.py --weights path/to/yolov5s.pt --include onnx --opset 13
+```
 ## for yolov5 option2# (.tflite)
 ### step 1 clone official repo
 git clone https://github.com/ultralytics/yolov5.git
 ### step 2 modify some code in official repo
-Sustitute class 'TFDetect' in https://github.com/ultralytics/yolov5/blob/master/models/tf.py by model_PTQ/My_Edge_Device/yolov5/TFDetect.py.
+Sustitute class 'TFDetect' in https://github.com/ultralytics/yolov5/blob/master/models/tf.py by class 'TFDetect' in model_PTQ/My_Edge_Device/yolov5/tflite/TFDetect.py.
+### step 3 export to .tflite model
+```bash
+cp path/to/model_PTQ/My_Edge_Device/yolov5/tflite/TFDetect.py path/to/yolov5
+```
+```bash
+cd path/to/yolov5
+```
+```bash
+pyhton ./export_to_tflite.py
+```
