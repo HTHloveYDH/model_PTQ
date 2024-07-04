@@ -46,10 +46,9 @@ snpe-pytorch-to-dlc --input_network models/my_model/my_model.pt --input_dim inpu
 ```
 
 ### step 5: convert to .dlc (with PTQ)
-add "--input_list path/to/image_file_list.txt" option to the commands in step 4
-
-or run following command:
+run following command:
 ```bash
-snpe-dlc-quantize --input_dlc path/to/my_model.dlc --input_list path/to/image_file_list.txt --output_dlc path/to/my_q_model.dlc
+snpe-dlc-quantize --input_dlc path/to/my_model.dlc --input_list path/to/image_file_list.txt --output_dlc path/to/my_q_model.dlc --optimizations cle --optimizations bc
 ```
 [Note]: Each path in "path/to/image_file_list.txt" is expected to point to a binary file containing one trial input in the 'raw' format, ready to be consumed by SNPE without any further modifications
+

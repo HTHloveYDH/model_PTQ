@@ -203,7 +203,7 @@ class YOLOXHead(nn.Module):
             )
         else:
             self.hw = [x.shape[-2:] for x in outputs]
-            # [batch, n_anchors_all, 85]
+            # [batch, 85, n_anchors_all]
             outputs = torch.cat(
                 [x.flatten(start_dim=2) for x in outputs], dim=2
             )
