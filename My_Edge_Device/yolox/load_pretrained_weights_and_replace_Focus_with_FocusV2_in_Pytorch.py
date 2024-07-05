@@ -46,7 +46,7 @@ if __name__ == '__main__':
     print(yolox.head.training)
     print(yolox.training)
     print(yolox.head.decode_in_inference)
-    yolox.load_state_dict('path/to/yolox_s.pth')
+    yolox.load_state_dict(torch.load('path/to/yolox_s.pth', map_location=torch.device('cpu'))['model'])
     replace_Focus_with_FocusV2(yolox)
 
 ######################## option2 end
