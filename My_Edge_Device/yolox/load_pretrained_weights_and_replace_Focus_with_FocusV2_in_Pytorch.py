@@ -21,6 +21,7 @@ replace_Focus_with_FocusV2(yolox)
 
 
 ######################## option2 begin
+
 from yolox.models.network_blocks import Focus, FocusV2
 from yolox.models.yolox import YOLOX
 
@@ -43,3 +44,5 @@ if __name__ == '__main__':
     print(yolox.head.decode_in_inference)
     yolox.load_state_dict('path/to/yolox_s.pth')
     replace_Focus_with_FocusV2(yolox)
+
+######################## option2 end
