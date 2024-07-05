@@ -24,6 +24,8 @@ replace_Focus_with_FocusV2(yolox)
 
 from yolox.models.network_blocks import Focus, FocusV2
 from yolox.models.yolox import YOLOX
+from yolox.models.yolo_head import YOLOXHead
+from yolox.models.yolo_pafpn import YOLOPAFPN
 
 def replace_Focus_with_FocusV2(model):
     for name, module in model.named_children():
@@ -36,7 +38,9 @@ def replace_Focus_with_FocusV2(model):
 
 
 if __name__ == '__main__':
-    yolox = YOLOX()
+    backbone = YOLOPAFPN(depth=0.33, width=0.50)  # yolox_s
+    head = YOLOXHead(num_classes=80, width=0.50)  # yolox_s
+    yolox = YOLOX(backbone=backbone, head=head)
     print(yolox)
     yolox.eval()
     print(yolox.head.training)
