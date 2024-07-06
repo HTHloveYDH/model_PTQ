@@ -16,10 +16,11 @@ git clone https://github.com/Megvii-BaseDetection/YOLOX.git
 1. Add 'class FocusV2' defined in model_PTQ/My_Edge_Device/yolox/FocusV2.py to https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/network_blocks.py.
 ### step 3 copy to the root directory of YOLOX
 ```bash
-cp
+cp path/to/load_pretrained_weights_and_replace_Focus_with_FocusV2_in_Pytorch.py path/to/YOLOX
+cd /path/to/YOLOX
 ```
 ### step 4 run and new .pt file for yolox with Focus module replaced by FocusV2 module will be available.
-```bash python
+```bash python ./load_pretrained_weights_and_replace_Focus_with_FocusV2_in_Pytorch.py
 ```
 ### step 5 modify some code in official repo
 1. Change this line "from .network_blocks import BaseConv, CSPLayer, DWConv, FocusV2, ResLayer, SPPBottleneck" in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/darknet.py to "from .network_blocks import BaseConv, CSPLayer, DWConv, Focus, FocusV2, ResLayer, SPPBottleneck".
