@@ -8,9 +8,11 @@ git clone https://github.com/Megvii-BaseDetection/YOLOX.git
 4. [option 1#] run yolox in shape: (1, 8400, 85)
 
 Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_shape_1_8400_85.py.
+
 6. [option 2#] run yolox in shape: (1, 85, 8400)
    
 Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_shape_1_85_8400.py.
+
 7. [option 2#] run yolox in shape: (1, 85, 8400)
 
 Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_split_by_conv_shape_1_85_8400.py.
