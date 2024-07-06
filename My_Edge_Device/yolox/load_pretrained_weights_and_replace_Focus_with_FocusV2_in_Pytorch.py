@@ -22,6 +22,8 @@ replace_Focus_with_FocusV2(yolox)
 
 ######################## option2 begin
 
+import torch
+
 from yolox.models.network_blocks import Focus, FocusV2
 from yolox.models.yolox import YOLOX
 from yolox.models.yolo_head import YOLOXHead
@@ -48,5 +50,6 @@ if __name__ == '__main__':
     print(yolox.head.decode_in_inference)
     yolox.load_state_dict(torch.load('path/to/yolox_s.pth', map_location=torch.device('cpu'))['model'])
     replace_Focus_with_FocusV2(yolox)
+    torch.save(yolox.state_dict(), './yolox_s_with_FocusV2.pt')
 
 ######################## option2 end
