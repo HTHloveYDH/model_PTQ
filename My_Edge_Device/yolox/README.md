@@ -1,4 +1,4 @@
-## for yolox without loading pretrained weights (without FoucusV2 module)
+## for yolox without loading pretrained weights
 ### step 1 clone official repo
 git clone https://github.com/Megvii-BaseDetection/YOLOX.git
 ### step 2 modify some code in official repo
