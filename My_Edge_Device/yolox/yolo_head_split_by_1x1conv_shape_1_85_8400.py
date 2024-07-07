@@ -216,7 +216,7 @@ class YOLOXHead(nn.Module):
             )
         else:
             self.hw = [x.shape[-2:] for x in outputs]
-            # [batch, 85, n_anchors_all, 1]
+            # [batch, 85, n_anchors_all]
             outputs = torch.cat(
                 [x.flatten(start_dim=2) for x in outputs], dim=2
             )
@@ -275,14 +275,17 @@ class YOLOXHead(nn.Module):
         # ], dim=1)
 
         # option 3#: conv
-        outputs = outputs.unsqueeze(dim=-1)
+        shape = outputs.shape  # [batch, 85, n_anchors_all]
+        outputs = outputs.view(*shape, 1)  # [batch, 85, n_anchors_all, 1]
+        # outputs = outputs.unsqueeze(dim=-1)  # [batch, 85, n_anchors_all, 1]
         xy, wh, conf = self.split_conv(outputs)
-        xy, wh, conf = xy.squeeze(dim=-1), wh.squeeze(dim=-1), conf.squeeze(dim=-1)
+        xy, wh, conf = xy.view(shape), wh.view(shape), conf.view(shape) 
+        # xy, wh, conf = xy.squeeze(dim=-1), wh.squeeze(dim=-1), conf.squeeze(dim=-1)
         outputs = torch.cat([
             (xy + grids) * strides,
             torch.exp(wh) * strides,
             conf
-        ], dim=1)
+        ], dim=1)  # [batch, 85, n_anchors_all]
         return outputs
 
     def get_losses(
