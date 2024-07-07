@@ -2,24 +2,24 @@ import torch
 import torch.nn as nn
 
 
-class SplitByConv1d(nn.Module):
+class SplitBy1x1Conv(nn.Module):
     """Focus width and height information into channel space."""
     def __init__(self, in_channels, nc=80):
-        super(SplitByConv1d, self).__init__()
-        xy_conv_weights = torch.zeros(2, in_channels, 1)
-        wh_conv_weights = torch.zeros(2, in_channels, 1)
-        conf_conv_weights = torch.zeros(nc + 5 - 4, in_channels, 1)
+        super(SplitBy1x1Conv, self).__init__()
+        xy_conv_weights = torch.zeros(2, in_channels, 1, 1)
+        wh_conv_weights = torch.zeros(2, in_channels, 1, 1)
+        conf_conv_weights = torch.zeros(nc + 5 - 4, in_channels, 1, 1)
         for i in range(0, 2):
-            xy_conv_weights[i][i][0] = 1.
+            xy_conv_weights[i][i][0][0] = 1.
         for i in range(0, 2):
-            wh_conv_weights[i][i + 2][0] = 1.
+            wh_conv_weights[i][i + 2][0][0] = 1.
         for i in range(0, nc + 5 - 4):
-            conf_conv_weights[i][i + 4][0] = 1.
-        self.conv1 = nn.Conv1d(in_channels, 2, 1, 1, padding=0, bias=False)
+            conf_conv_weights[i][i + 4][0][0] = 1.
+        self.conv1 = nn.Conv2d(in_channels, 2, 1, 1, padding=0, bias=False)
         self.conv1.weight = nn.Parameter(xy_conv_weights, requires_grad=False)
-        self.conv2 = nn.Conv1d(in_channels, 2, 1, 1, padding=0, bias=False)
+        self.conv2 = nn.Conv2d(in_channels, 2, 1, 1, padding=0, bias=False)
         self.conv2.weight = nn.Parameter(wh_conv_weights, requires_grad=False)
-        self.conv3 = nn.Conv1d(in_channels, nc + 5 - 4, 1, 1, padding=0, bias=False)
+        self.conv3 = nn.Conv2d(in_channels, nc + 5 - 4, 1, 1, padding=0, bias=False)
         self.conv3.weight = nn.Parameter(conf_conv_weights, requires_grad=False)
 
 
@@ -139,7 +139,7 @@ class YOLOXHead(nn.Module):
         self.iou_loss = IOUloss(reduction="none")
         self.strides = strides
         self.grids = [torch.zeros(1)] * len(in_channels)
-        self.split_conv = SplitByConv1d(num_classes + 5)
+        self.split_conv = SplitBy1x1Conv(num_classes + 5)
 
     def initialize_biases(self, prior_prob):
         for conv in self.cls_preds:
@@ -216,10 +216,10 @@ class YOLOXHead(nn.Module):
             )
         else:
             self.hw = [x.shape[-2:] for x in outputs]
-            # [batch, 85, n_anchors_all]
+            # [batch, 85, n_anchors_all, 1]
             outputs = torch.cat(
                 [x.flatten(start_dim=2) for x in outputs], dim=2
-            )
+            ).unsqueeze(dim=-1)
             # ).permute(0, 2, 1)
             if self.decode_in_inference:
                 return self.decode_outputs(outputs, dtype=xin[0].type())
@@ -259,6 +259,7 @@ class YOLOXHead(nn.Module):
         grids = torch.cat(grids, dim=-1).type(dtype)
         strides = torch.cat(strides, dim=-1).type(dtype)
 
+        outputs = outputs.squeeze(dim=-1)  # [batch, 85, n_anchors_all]
         # # option 1#: slice
         # outputs = torch.cat([
         #     (outputs[:, 0:2, :] + grids) * strides,
