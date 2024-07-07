@@ -276,10 +276,11 @@ class YOLOXHead(nn.Module):
 
         # option 3#: conv
         shape = outputs.shape  # [batch, 85, n_anchors_all]
+        batch, no, n_anchors_all = shape
         outputs = outputs.view(*shape, 1)  # [batch, 85, n_anchors_all, 1]
         # outputs = outputs.unsqueeze(dim=-1)  # [batch, 85, n_anchors_all, 1]
         xy, wh, conf = self.split_conv(outputs)
-        xy, wh, conf = xy.view(shape), wh.view(shape), conf.view(shape) 
+        xy, wh, conf = xy.view(batch, 2, n_anchors_all), wh.view(batch, 2, n_anchors_all), conf.view(batch, no - 4, n_anchors_all) 
         # xy, wh, conf = xy.squeeze(dim=-1), wh.squeeze(dim=-1), conf.squeeze(dim=-1)
         outputs = torch.cat([
             (xy + grids) * strides,
