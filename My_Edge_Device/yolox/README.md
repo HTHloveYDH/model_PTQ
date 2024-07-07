@@ -7,7 +7,8 @@ git clone https://github.com/Megvii-BaseDetection/YOLOX.git
 3. Change this line "self.stem = Focus(3, base_channels, ksize=3, act=act)" in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/darknet.py to "self.stem = FocusV2(3, base_channels, ksize=3, act=act)".
 4. [option 1#: run yolox in shape: (1, 8400, 85)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_shape_1_8400_85.py.
 6. [option 2#: run yolox in shape: (1, 85, 8400)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_shape_1_85_8400.py.
-7. [option 2#: run yolox in shape: (1, 85, 8400)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_split_by_conv_shape_1_85_8400.py.
+7. [option 2#: run yolox in shape: (1, 85, 8400)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_split_by_conv1d_shape_1_85_8400.py.
+8. [option 3#: run yolox in shape: (1, 85, 8400)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_split_by_1x1conv_shape_1_85_8400.py.
 
 ## for yolox with loading pretrained weights (without FoucusV2 module) for testing and fintuning
 ### step 1 clone official repo
@@ -27,4 +28,5 @@ cd /path/to/YOLOX
 2. Change this line "self.stem = Focus(3, base_channels, ksize=3, act=act)" in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/darknet.py to "self.stem = FocusV2(3, base_channels, ksize=3, act=act)".
 3. [option 1#: run yolox in shape: (1, 8400, 85)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_shape_1_8400_85.py.
 4. [option 2#: run yolox in shape: (1, 85, 8400)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_shape_1_85_8400.py.
-5. [option 2#: run yolox in shape: (1, 85, 8400)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_split_by_conv_shape_1_85_8400.py.
+5. [option 2#: run yolox in shape: (1, 85, 8400)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_split_by_conv1d_shape_1_85_8400.py.
+6. [option 3#: run yolox in shape: (1, 85, 8400)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_split_by_1x1conv_shape_1_85_8400.py.
