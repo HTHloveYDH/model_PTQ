@@ -31,7 +31,7 @@ class YOLOXHead(nn.Module):
     def __init__(
         self,
         num_classes,
-        width=1.0,
+        width=0.50,
         strides=[8, 16, 32],
         in_channels=[256, 512, 1024],
         act="silu",
@@ -219,7 +219,7 @@ class YOLOXHead(nn.Module):
             # [batch, 85, n_anchors_all, 1]
             outputs = torch.cat(
                 [x.flatten(start_dim=2) for x in outputs], dim=2
-            ).unsqueeze(dim=-1)
+            )
             # ).permute(0, 2, 1)
             if self.decode_in_inference:
                 return self.decode_outputs(outputs, dtype=xin[0].type())
@@ -259,7 +259,6 @@ class YOLOXHead(nn.Module):
         grids = torch.cat(grids, dim=-1).type(dtype)
         strides = torch.cat(strides, dim=-1).type(dtype)
 
-        outputs = outputs.squeeze(dim=-1)  # [batch, 85, n_anchors_all]
         # # option 1#: slice
         # outputs = torch.cat([
         #     (outputs[:, 0:2, :] + grids) * strides,
@@ -276,7 +275,9 @@ class YOLOXHead(nn.Module):
         # ], dim=1)
 
         # option 3#: conv
+        outputs = outputs.unsqueeze(dim=-1)
         xy, wh, conf = self.split_conv(outputs)
+        xy, wh, conf = xy.squeeze(dim=-1), wh.squeeze(dim=-1), conf.squeeze(dim=-1)
         outputs = torch.cat([
             (xy + grids) * strides,
             torch.exp(wh) * strides,
@@ -671,4 +672,3 @@ class YOLOXHead(nn.Module):
             save_name = save_prefix + str(batch_idx) + ".png"
             img = visualize_assign(img, xyxy_boxes, coords, matched_gt_inds, save_name)
             logger.info(f"save img to {save_name}")
-
