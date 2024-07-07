@@ -31,7 +31,7 @@ class YOLOXHead(nn.Module):
     def __init__(
         self,
         num_classes,
-        width=0.50,
+        width=1.0,
         strides=[8, 16, 32],
         in_channels=[256, 512, 1024],
         act="silu",
