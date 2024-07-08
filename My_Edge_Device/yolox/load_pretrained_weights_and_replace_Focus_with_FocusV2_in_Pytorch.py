@@ -7,7 +7,7 @@ from yolox.models.network_blocks import Focus, FocusV2
 def replace_Focus_with_FocusV2(model):
     for name, module in model.named_children():
         if isinstance(module, Focus):
-            focusv2 = FocusV2(in_channels=module.conv.conv.in_channels // 4, out_channels=module.conv.conv.in_channels)
+            focusv2 = FocusV2(in_channels=module.conv.conv.in_channels // 4, out_channels=module.conv.conv.out_channels)
             focusv2.conv2 = module.conv
             setattr(model, name, focusv2)
         elif len(list(module.children())) > 0:
