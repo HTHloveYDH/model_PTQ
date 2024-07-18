@@ -20,7 +20,7 @@ git clone https://github.com/Megvii-BaseDetection/YOLOX.git
 cp path/to/load_pretrained_weights_and_replace_Focus_with_FocusV2_in_Pytorch.py path/to/YOLOX
 cd /path/to/YOLOX
 ```
-### step 4 run and new .pt file for yolox with Focus module replaced by FocusV2 module will be available.
+### step 4 run following code and new .pt file for yolox with Focus module replaced by FocusV2 module will be available.
 ```bash
 python ./load_pretrained_weights_and_replace_Focus_with_FocusV2_in_Pytorch.py
 ```
