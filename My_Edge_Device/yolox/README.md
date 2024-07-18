@@ -10,6 +10,9 @@ git clone https://github.com/Megvii-BaseDetection/YOLOX.git
 7. [option 2#: run yolox in shape: (1, 85, 8400)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_split_by_conv1d_shape_1_85_8400.py.
 8. [option 3#: run yolox in shape: (1, 85, 8400)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_split_by_1x1conv_shape_1_85_8400.py.
 
+### step 3 export to onnx or train model on your own dataset
+
+
 ## for yolox with loading pretrained weights (without FoucusV2 module) for testing and fintuning
 ### step 1 clone official repo
 git clone https://github.com/Megvii-BaseDetection/YOLOX.git
@@ -31,3 +34,5 @@ python ./load_pretrained_weights_and_replace_Focus_with_FocusV2_in_Pytorch.py
 4. [option 2#: run yolox in shape: (1, 85, 8400)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_shape_1_85_8400.py.
 5. [option 2#: run yolox in shape: (1, 85, 8400)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_split_by_conv1d_shape_1_85_8400.py.
 6. [option 3#: run yolox in shape: (1, 85, 8400)] Modify class 'YOLOXHead' in https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/models/yolo_head.py according to model_PTQ/My_Edge_Device/yolox/yolo_head_split_by_1x1conv_shape_1_85_8400.py.
+
+### step 6 export to onnx or train model on your own dataset (remember to load .pt / .pth weight generated in step 4)
